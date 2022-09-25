@@ -2,7 +2,7 @@
 
 const autocannon = require("autocannon");
 const { storeId } = require("../helper");
-const { generateUserData } = require("../schemaToGenerateFakeData");
+const { generateOrderAndInventory } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -27,8 +27,10 @@ const instance = autocannon(
           "Content-type": "application/json; charset=utf-8",
         },
         setupRequest: (requests) => {
+          const { orders, inventories } = generateOrderAndInventory(inpt[0]);
           requests.body = JSON.stringify({
-            usersData: generateUserData(inpt[0]),
+            orders,
+            inventories,
           });
           return requests;
         },
@@ -37,7 +39,7 @@ const instance = autocannon(
             storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "User");
           }
         },
-        path: "/api/test-crud/insert-many",
+        path: "/api/test-lookup/insert-many",
       },
     ],
   },
