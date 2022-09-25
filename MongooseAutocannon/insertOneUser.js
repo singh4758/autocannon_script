@@ -2,24 +2,24 @@
 
 const autocannon = require("autocannon");
 const { storeId } = require("../helper");
-const { generateNestedUserData } = require("../schemaToGenerateFakeData");
+const { generateUserData } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
   .slice(2)
   .map((value) => parseInt(value));
 
 console.log(
-  `no of docs for each request ${inpt[0]}\nno of request ${inpt[1]}\nno of connections ${inpt[2]}`
+  `no of request ${inpt[0]}\nno of connections ${inpt[1]}`
 );
 
 const instance = autocannon(
   {
     title: `insertMany ${new Date().toLocaleString()}`,
-    url: "http://localhost:3000",
-    connections: inpt[2],
+    url: "http://localhost:4000",
+    connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
-    amount: inpt[1],
+    amount: inpt[0],
     requests: [
       {
         method: "POST",
@@ -28,16 +28,16 @@ const instance = autocannon(
         },
         setupRequest: (requests) => {
           requests.body = JSON.stringify({
-            usersData: generateNestedUserData(inpt[0]),
+            usersData: generateUserData(1),
           });
           return requests;
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NativeNestedUser");
+            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "MongooseUser");
           }
         },
-        path: "/api/test-nested-write/insert-many",
+        path: "/api/test-crud/insert-one",
       },
     ],
   },

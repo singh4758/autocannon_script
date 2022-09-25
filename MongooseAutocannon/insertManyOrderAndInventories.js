@@ -1,7 +1,6 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { storeId } = require("../helper");
 const { generateOrderAndInventory } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)

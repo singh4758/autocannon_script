@@ -30,6 +30,7 @@ const readIds = (collectionName, noIds) => {
   }
   const ids = JSON.parse(fs.readFileSync(`../dataGenerated/${collectionName}Ids.json`, { encoding: "utf-8" }))
   const extractedIds = ids.splice(0, noIds);
+  ids.push(...extractedIds);
   fs.writeFileSync(`../dataGenerated/${collectionName}Ids.json`, JSON.stringify(ids));
   return extractedIds;
 }
