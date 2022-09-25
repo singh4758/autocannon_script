@@ -2,7 +2,7 @@
 
 const autocannon = require("autocannon");
 const { storeId } = require("../helper");
-const { generateUserData } = require("../schemaToGenerateFakeData");
+const { generateNestedUserData } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -28,16 +28,16 @@ const instance = autocannon(
         },
         setupRequest: (requests) => {
           requests.body = JSON.stringify({
-            usersData: generateUserData(inpt[0]),
+            usersData: generateNestedUserData(inpt[0]),
           });
           return requests;
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "User");
+            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NestedUser");
           }
         },
-        path: "/api/test-crud/insert-many",
+        path: "/api/test-nested-write/insert-many",
       },
     ],
   },
