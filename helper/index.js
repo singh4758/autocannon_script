@@ -35,4 +35,13 @@ const readIds = (collectionName, noIds) => {
   return extractedIds;
 }
 
-module.exports = { storeId, readIds, readIdsRemove };
+const countIds = (collectionName) => {
+  const pathExists = fs.existsSync(`../dataGenerated/${collectionName}Ids.json`);
+  if (!pathExists) {
+    return 0;
+  }
+  const ids = JSON.parse(fs.readFileSync(`../dataGenerated/${collectionName}Ids.json`, { encoding: "utf-8" }))
+  return ids.length || 0;
+}
+
+module.exports = { storeId, readIds, readIdsRemove, countIds };

@@ -14,7 +14,7 @@ console.log(
 const instance = autocannon(
   {
     title: `findOne ${new Date().toLocaleString()}`,
-    url: "http://localhost:3000",
+    url: "http://localhost:4000",
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,

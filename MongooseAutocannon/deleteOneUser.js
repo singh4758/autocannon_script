@@ -1,7 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { readIds } = require("../helper");
+const { readIdsRemove } = require("../helper");
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -13,23 +13,23 @@ console.log(
 
 const instance = autocannon(
   {
-    title: `findOne ${new Date().toLocaleString()}`,
-    url: "http://localhost:3000",
+    title: `deketeOne ${new Date().toLocaleString()}`,
+    url: "http://localhost:4000",
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
     amount: inpt[0],
     requests: [
       {
-        method: "GET",
+        method: "DELETE",
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
         setupRequest: (requests) => {
-          requests.path = `/api/test-crud/find-one/${readIds('NativeUser' , 1)[0]}`;
+          requests.body = JSON.stringify({id: readIdsRemove('MongooseUser' , 1)[0]});
           return requests;
         },
-        path: `/api/test-crud/find-one/`,
+        path: `/api/test-crud/delete-one/`,
       },
     ],
   },
