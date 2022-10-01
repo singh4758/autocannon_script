@@ -2,7 +2,7 @@
 
 const autocannon = require("autocannon");
 const { storeId } = require("../helper");
-const { generateUserData } = require("../schemaToGenerateFakeData");
+const { generateNestedUserData } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -15,7 +15,7 @@ console.log(
 const instance = autocannon(
   {
     title: `insertOne ${new Date().toLocaleString()}`,
-    url: "http://localhost:3000",
+    url: "http://localhost:4000",
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
@@ -28,16 +28,16 @@ const instance = autocannon(
         },
         setupRequest: (requests) => {
           requests.body = JSON.stringify({
-            ...generateUserData(1)[0],
+            ...generateNestedUserData(1)[0],
           });
           return requests;
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId({0: JSON.parse(res || "")?.body?.insertedId} || {}, "NativeUser");
+            storeId({0: JSON.parse(res || "")?.body?.insertedId} || {}, "NativeNestedUser");
           }
         },
-        path: "/api/test-crud/insert-one",
+        path: "/api/test-nested-write/insert-one",
       },
     ],
   },
