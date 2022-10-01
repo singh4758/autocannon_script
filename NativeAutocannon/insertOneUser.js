@@ -14,7 +14,7 @@ console.log(
 
 const instance = autocannon(
   {
-    title: `insertMany ${new Date().toLocaleString()}`,
+    title: `insertOne ${new Date().toLocaleString()}`,
     url: "http://localhost:3000",
     connections: inpt[1],
     pipelining: 1,

@@ -1,7 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { storeId } = require("../helper");
+const { readIds } = require("../helper");
 const { generateUserData } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
@@ -14,7 +14,7 @@ console.log(
 
 const instance = autocannon(
   {
-    title: `insertOne ${new Date().toLocaleString()}`,
+    title: `updateOneUser ${new Date().toLocaleString()}`,
     url: "http://localhost:4000",
     connections: inpt[1],
     pipelining: 1,
@@ -22,22 +22,20 @@ const instance = autocannon(
     amount: inpt[0],
     requests: [
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
         setupRequest: (requests) => {
+          const updateBody = generateUserData(1)[0];
+          delete updateBody._id;
           requests.body = JSON.stringify({
-            usersData: generateUserData(1),
+            id: readIds('NativeUser' , 1)[0],
+            updateBody,
           });
           return requests;
         },
-        onResponse: (status, res) => {
-          if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "MongooseUser");
-          }
-        },
-        path: "/api/test-crud/insert-one",
+        path: "/api/test-crud/update-one",
       },
     ],
   },
