@@ -31,7 +31,7 @@ const instance = autocannon(
           requests.path = `/api/test-crud/find-all?page=${page}&limit=${limit}`;
           return requests;
         },
-        path: `/api/test-crud/find-one/`,
+        path: `/api/test-crud/find-all/`,
       },
     ],
   },

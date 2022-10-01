@@ -8,12 +8,12 @@ let inpt = Object.values(process.argv)
   .map((value) => parseInt(value));
 
 console.log(
-  `no of request ${inpt[0]}\nno of connections ${inpt[1]}\nno of records find per page ${inpt[2]}`
+  `no of request ${inpt[0]}\nno of connections ${inpt[1]}\nno of records find per page ${inpt[2]}\nno of innerDocs required ${inpt[3]}`
 );
 
 const instance = autocannon(
   {
-    title: `findAll ${new Date().toLocaleString()}`,
+    title: `lookUp ${new Date().toLocaleString()}`,
     url: "http://localhost:3000",
     connections: inpt[1],
     pipelining: 1,
@@ -27,11 +27,12 @@ const instance = autocannon(
         },
         setupRequest: (requests) => {
           const limit = parseInt(inpt[2]);
-          const page = parseInt(Math.random() * (countIds('NativeUser')/limit))+1;
-          requests.path = `/api/test-crud/find-all?page=${page}&limit=${limit}`;
+          const page = parseInt(Math.random() * (countIds('OrderAndInventories')/limit))+1;
+          console.log(limit, page);
+          requests.path = `/api/test-lookup/populate?page=${page}&limit=${limit}&lookUpLimit=${inpt[3]}`;
           return requests;
         },
-        path: `/api/test-crud/find-all/`,
+        path: `/api/test-lookup/populate/`,
       },
     ],
   },

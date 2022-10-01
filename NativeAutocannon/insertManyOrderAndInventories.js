@@ -1,6 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
+const { storeId } = require('./../helper');
 const { generateOrderAndInventory } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
@@ -32,6 +33,11 @@ const instance = autocannon(
             inventories,
           });
           return requests;
+        },
+        onResponse: (status, res) => {
+          if (status === 200) {
+            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "OrderAndInventories");
+          }
         },
         path: "/api/test-lookup/insert-many",
       },

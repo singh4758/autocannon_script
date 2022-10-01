@@ -9,7 +9,7 @@ const storeId = (ObjectIds, collectionName) => {
   const data = existingData ? JSON.parse(existingData) : [];
   const ids = Object.values(ObjectIds);
   data.unshift(...ids);
-  fs.writeFileSync(`../dataGenerated/${collectionName}Ids.json`, JSON.stringify(data, null, 2));
+  fs.writeFileSync(`../dataGenerated/${collectionName}Ids.json`, JSON.stringify(data));
 }
 
 const readIdsRemove = (collectionName, noIds) => {
@@ -19,7 +19,7 @@ const readIdsRemove = (collectionName, noIds) => {
   }
   const ids = JSON.parse(fs.readFileSync(`../dataGenerated/${collectionName}Ids.json`, { encoding: "utf-8" }))
   const extractedIds = ids.splice(0, noIds);
-  fs.writeFileSync(`../dataGenerated/${collectionName}Ids.json`, JSON.stringify(ids, null, 2));
+  fs.writeFileSync(`../dataGenerated/${collectionName}Ids.json`, JSON.stringify(ids));
   return extractedIds;
 }
 
@@ -31,7 +31,7 @@ const readIds = (collectionName, noIds) => {
   const ids = JSON.parse(fs.readFileSync(`../dataGenerated/${collectionName}Ids.json`, { encoding: "utf-8" }))
   const extractedIds = ids.splice(0, noIds);
   ids.push(...extractedIds);
-  fs.writeFileSync(`../dataGenerated/${collectionName}Ids.json`, JSON.stringify(ids, null, 2));
+  fs.writeFileSync(`../dataGenerated/${collectionName}Ids.json`, JSON.stringify(ids));
   return extractedIds;
 }
 
