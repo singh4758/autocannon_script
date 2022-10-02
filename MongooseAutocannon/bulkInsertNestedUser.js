@@ -15,7 +15,7 @@ console.log(
 const instance = autocannon(
   {
     title: `bulkInsert ${new Date().toLocaleString()}`,
-    url: "http://localhost:3000",
+    url: "http://localhost:4000",
     connections: inpt[2],
     pipelining: 1,
     timeout: 1000,
@@ -34,7 +34,7 @@ const instance = autocannon(
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NativeNestedUser");
+            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "MongooseNestedUser");
           }
         },
         path: "/api/test-nested-write/insert-many",

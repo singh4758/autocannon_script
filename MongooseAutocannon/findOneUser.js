@@ -26,7 +26,7 @@ const instance = autocannon(
           "Content-type": "application/json; charset=utf-8",
         },
         setupRequest: (requests) => {
-          requests.path = `/api/test-crud/find-one/${readIds('NativeUser' , 1)[0]}`;
+          requests.path = `/api/test-crud/find-one/${readIds('MongooseUser' , 1)[0]}`;
           return requests;
         },
         path: `/api/test-crud/find-one/`,

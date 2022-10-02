@@ -30,7 +30,7 @@ const instance = autocannon(
           const updateBody = generateUserData(1)[0];
           delete updateBody._id;
           requests.body = JSON.stringify({
-            ids: readIds('NativeUser' , inpt[0]),
+            ids: readIds('MongooseUser' , inpt[0]),
             updateBody,
           });
           return requests;

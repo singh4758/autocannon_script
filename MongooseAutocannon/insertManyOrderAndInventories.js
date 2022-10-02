@@ -33,6 +33,11 @@ const instance = autocannon(
           });
           return requests;
         },
+        onResponse: (status, res) => {
+          if (status === 200) {
+            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "MongooseOrderAndInventories");
+          }
+        },
         path: "/api/test-lookup/insert-many",
       },
     ],

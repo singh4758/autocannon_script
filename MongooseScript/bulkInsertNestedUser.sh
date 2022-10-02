@@ -8,4 +8,4 @@ echo "no of connection"
 read noOfConnection
 echo "request sending start"
 echo ""
-node ../NativeAutocannon/bulkInsertNestedUser.js $noOfRecords $noOfRequest $noOfConnection > ../NativeReport/bulkInsertNestedUser"$(date '+%s')".txt
+node ../MongooseAutocannon/bulkInsertNestedUser.js $noOfRecords $noOfRequest $noOfConnection > ../MongooseReport/bulkInsertNestedUser"$(date '+%s')".txt

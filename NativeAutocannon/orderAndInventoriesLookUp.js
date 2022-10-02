@@ -27,7 +27,7 @@ const instance = autocannon(
         },
         setupRequest: (requests) => {
           const limit = parseInt(inpt[2]);
-          const page = parseInt(Math.random() * (countIds('OrderAndInventories')/limit))+1;
+          const page = parseInt(Math.random() * (countIds('NativeOrderAndInventories')/limit))+1;
           requests.path = `/api/test-lookup/populate?page=${page}&limit=${limit}&lookUpLimit=${inpt[3]}`;
           return requests;
         },

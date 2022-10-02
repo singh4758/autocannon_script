@@ -15,7 +15,7 @@ console.log(
 const instance = autocannon(
   {
     title: `updateManyNestedUser ${new Date().toLocaleString()}`,
-    url: "http://localhost:3000",
+    url: "http://localhost:4000",
     connections: inpt[2],
     pipelining: 1,
     timeout: 1000,
@@ -30,7 +30,7 @@ const instance = autocannon(
           const updateBody = generateNestedUserData(1)[0];
           delete updateBody._id;
           requests.body = JSON.stringify({
-            ids: readIds('NativeNestedUser' , inpt[0]),
+            ids: readIds('MongooseNestedUser' , inpt[0]),
             updateBody,
           });
           return requests;

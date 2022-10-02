@@ -36,7 +36,7 @@ const instance = autocannon(
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "OrderAndInventories");
+            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NativeOrderAndInventories");
           }
         },
         path: "/api/test-lookup/insert-many",
