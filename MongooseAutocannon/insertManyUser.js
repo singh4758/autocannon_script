@@ -34,7 +34,9 @@ const instance = autocannon(
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "MongooseUser");
+            const ObjectIds = {};
+            JSON.parse(res || "")?.body?.forEach(({_id}, index) => ObjectIds[index]=_id);
+            storeId(ObjectIds, "MongooseUser");
           }
         },
         path: "/api/test-crud/insert-many",

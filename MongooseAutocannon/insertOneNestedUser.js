@@ -34,7 +34,7 @@ const instance = autocannon(
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId({0: JSON.parse(res || "")?.body?.insertedId} || {}, "MongooseNestedUser");
+            storeId({0: JSON.parse(res || "")?.body?._id} || {}, "MongooseNestedUser");
           }
         },
         path: "/api/test-nested-write/insert-one",

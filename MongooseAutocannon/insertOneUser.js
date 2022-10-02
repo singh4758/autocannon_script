@@ -34,7 +34,7 @@ const instance = autocannon(
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "MongooseUser");
+            storeId(JSON.parse(res || "")?.body?._id || {}, "MongooseUser");
           }
         },
         path: "/api/test-crud/insert-one",

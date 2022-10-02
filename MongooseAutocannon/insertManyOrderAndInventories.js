@@ -35,7 +35,9 @@ const instance = autocannon(
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "MongooseOrderAndInventories");
+            const ObjectIds = {};
+            JSON.parse(res || "")?.body?.forEach(({_id}, index) => ObjectIds[index]=_id);
+            storeId(ObjectIds, "MongooseOrderAndInventories");
           }
         },
         path: "/api/test-lookup/insert-many",
