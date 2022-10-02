@@ -14,7 +14,7 @@ console.log(
 const instance = autocannon(
   {
     title: `lookUp ${new Date().toLocaleString()}`,
-    url: "http://localhost:3000",
+    url: "http://localhost:4000",
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
@@ -28,7 +28,6 @@ const instance = autocannon(
         setupRequest: (requests) => {
           const limit = parseInt(inpt[2]);
           const page = parseInt(Math.random() * (countIds('OrderAndInventories')/limit))+1;
-          console.log(limit, page);
           requests.path = `/api/test-lookup/populate?page=${page}&limit=${limit}&lookUpLimit=${inpt[3]}`;
           return requests;
         },
