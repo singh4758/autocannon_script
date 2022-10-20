@@ -14,7 +14,7 @@ cp /home/abhishek/Documents/Myself/script/staticData/*.json /home/abhishek/Docum
 
 mongorestore --drop --archive="../staticData/Native_Driver"
 
-gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Native_Driver; clinic doctor  --collect-only  --dest ../NestedDoctor/findOneUser/findOneD1R${noOfRequest}C${noOfConnection} -- node ./dist/index.js'"
+gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Native_Driver; clinic doctor  --collect-only  --dest ../NativeDoctor/findOneUser/findOneD1R${noOfRequest}C${noOfConnection} -- node ./dist/index.js'"
 
 sleep 2
 
