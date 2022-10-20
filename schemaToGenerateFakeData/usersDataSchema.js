@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const { faker } = require("@faker-js/faker");
 
 const generateUserData = (totalDocs) => {
@@ -18,7 +17,6 @@ const generateUserData = (totalDocs) => {
     }
 
     const personData = {
-      _id: new ObjectId(),
       avatar: faker.image.avatar(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),

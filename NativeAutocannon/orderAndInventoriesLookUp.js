@@ -27,7 +27,7 @@ const instance = autocannon(
         },
         setupRequest: (requests) => {
           const limit = parseInt(inpt[2]);
-          const page = parseInt(Math.random() * (countIds('NativeOrderAndInventories')/limit))+1;
+          const page = parseInt(Math.random() * (500000/limit))+1;
           requests.path = `/api/test-lookup/populate?page=${page}&limit=${limit}&lookUpLimit=${inpt[3]}`;
           return requests;
         },
@@ -46,3 +46,12 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
+
+let overallTime = 0;
+instance.on('response', (_, __, ___, responseTime) => {
+  overallTime += responseTime;
+});
+
+instance.on('done', () => {
+  console.log('average response time', overallTime/inpt[1]);
+});

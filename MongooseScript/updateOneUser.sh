@@ -6,4 +6,17 @@ echo "no of connection"
 read noOfConnection
 echo "request sending start"
 echo ""
-node ../MongooseAutocannon/updateOneUser.js $noOfRequest $noOfConnection > ../MongooseReport/updateOneUser"$(date '+%s')".txt
+
+
+rm -rf ../dataGenerated
+mkdir ../dataGenerated
+cp /home/abhishek/Documents/Myself/script/staticData/*.json /home/abhishek/Documents/Myself/script/dataGenerated
+
+mongorestore --drop --archive="../staticData/Mongoose_ODM"
+
+gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Mongoose_ODM; clinic doctor  --collect-only  --dest ../MongooseDoctor/updateOneUser/insertOneD1R${noOfRequest}C${noOfConnection} -- node ./dist/index.js'"
+
+sleep 2
+
+
+node ../MongooseAutocannon/updateOneUser.js $noOfRequest $noOfConnection > ../MongooseReport/updateOneUser"D${noOfRecords}R${noOfRequest}C${noOfConnection} $(date '+%s')".txt

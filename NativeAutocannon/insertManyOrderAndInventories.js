@@ -36,7 +36,7 @@ const instance = autocannon(
         },
         onResponse: (status, res) => {
           if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NativeOrderAndInventories");
+            // storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NativeOrderAndInventories");
           }
         },
         path: "/api/test-lookup/insert-many",
@@ -54,3 +54,12 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
+
+let overallTime = 0;
+instance.on('response', (_, __, ___, responseTime) => {
+  overallTime += responseTime;
+});
+
+instance.on('done', () => {
+  console.log('average response time', overallTime/inpt[1]);
+});

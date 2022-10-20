@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 const { faker } = require("@faker-js/faker");
 
 const generateNestedUserData = (totalDocs) => {
@@ -20,7 +19,6 @@ const generateNestedUserData = (totalDocs) => {
     const newAddress = addresses.map((address) => ({...address, address: addresses}));
 
     const personData = {
-      _id: new ObjectId(),
       avatar: faker.image.avatar(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),

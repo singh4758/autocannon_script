@@ -8,4 +8,17 @@ echo "no of connection"
 read noOfConnection
 echo "request sending start"
 echo ""
+
+
+rm -rf ../dataGenerated
+mkdir ../dataGenerated
+cp /home/abhishek/Documents/Myself/script/staticData/*.json /home/abhishek/Documents/Myself/script/dataGenerated
+
+mongorestore --drop --archive="../staticData/Native_Driver"
+
+gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Native_Driver; clinic doctor  --collect-only  --dest ../NestedDoctor/insertManyOrdersAndInventories/insertManyD${noOfRecords}R${noOfRequest}C${noOfConnection} -- node ./dist/index.js'"
+
+sleep 2
+
+
 node ../NativeAutocannon/insertManyOrderAndInventories.js $noOfRecords $noOfRequest $noOfConnection
