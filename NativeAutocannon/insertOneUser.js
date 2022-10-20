@@ -54,10 +54,13 @@ const instance = autocannon(
 autocannon.track(instance);
 
 let overallTime = 0;
+let count =0;
 instance.on('response', (_, __, ___, responseTime) => {
   overallTime += responseTime;
+  count++;
 });
 
 instance.on('done', () => {
-  console.log('average response time', overallTime/inpt[1]);
+  console.log('no. of successfull response ', count);
+  console.log('average response time ', overallTime/count);
 });
