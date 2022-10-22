@@ -1,8 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { storeId } = require("../helper");
-const { generateNestedUserData } = require("../schemaToGenerateFakeData");
+const path = require('path');
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -19,6 +18,8 @@ const instance = autocannon(
     connections: inpt[2],
     pipelining: 1,
     timeout: 1000,
+    workers: 4,
+    initialContext: { noOfData: inpt[0] },
     amount: inpt[1],
     requests: [
       {
@@ -26,17 +27,7 @@ const instance = autocannon(
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          requests.body = JSON.stringify({
-            usersData: generateNestedUserData(inpt[0]),
-          });
-          return requests;
-        },
-        onResponse: (status, res) => {
-          if (status === 200) {
-            storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NativeNestedUser");
-          }
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/bulkInsertNestedUserRequest.js'),
         path: "/api/test-nested-write/insert-many",
       },
     ],

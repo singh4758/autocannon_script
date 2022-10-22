@@ -1,7 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { readIdsRemove } = require("../helper");
+const path = require('path');
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -19,16 +19,15 @@ const instance = autocannon(
     pipelining: 1,
     timeout: 1000,
     amount: inpt[0],
+    workers: 4,
+    initialContext: { noOfData: inpt[2] },
     requests: [
       {
         method: "DELETE",
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          requests.body = JSON.stringify({ids: readIdsRemove('MongooseUser' , inpt[2])});
-          return requests;
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/deleteManyUserRequest.js'),
         path: `/api/test-crud/delete-many/`,
       },
     ],
@@ -44,15 +43,3 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
-
-let overallTime = 0;
-let count =0;
-instance.on('response', (_, __, ___, responseTime) => {
-  overallTime += responseTime;
-  count++;
-});
-
-instance.on('done', () => {
-  console.log('no. of successfull response ', count);
-  console.log('average response time ', overallTime/count);
-});

@@ -19,6 +19,7 @@ const instance = autocannon(
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
+    workers: 4,
     amount: inpt[0],
     requests: [
       {
@@ -26,17 +27,7 @@ const instance = autocannon(
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          requests.body = JSON.stringify({
-            ...generateNestedUserData(1)[0],
-          });
-          return requests;
-        },
-        onResponse: (status, res) => {
-          if (status === 200) {
-            storeId({0: JSON.parse(res || "")?.body?._id} || {}, "MongooseNestedUser");
-          }
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/insertOneNestedUserRequest.js'),
         path: "/api/test-nested-write/insert-one",
       },
     ],
@@ -52,15 +43,3 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
-
-let overallTime = 0;
-let count =0;
-instance.on('response', (_, __, ___, responseTime) => {
-  overallTime += responseTime;
-  count++;
-});
-
-instance.on('done', () => {
-  console.log('no. of successfull response ', count);
-  console.log('average response time ', overallTime/count);
-});

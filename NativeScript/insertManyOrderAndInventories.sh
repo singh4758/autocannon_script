@@ -12,7 +12,7 @@ echo ""
 
 rm -rf ../dataGenerated
 mkdir ../dataGenerated
-cp /home/abhishek/Documents/Myself/script/staticData/*.json /home/abhishek/Documents/Myself/script/dataGenerated
+cp /home/abhishek/Documents/Myself/script/staticData/*.js /home/abhishek/Documents/Myself/script/dataGenerated
 
 mongorestore --drop --archive="../staticData/Native_Driver"
 

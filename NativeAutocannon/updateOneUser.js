@@ -1,8 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { readIds } = require("../helper");
-const { generateUserData } = require("../schemaToGenerateFakeData");
+const path = require('path');
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -19,6 +18,7 @@ const instance = autocannon(
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
+    workers: 4,
     amount: inpt[0],
     requests: [
       {
@@ -26,15 +26,7 @@ const instance = autocannon(
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          const updateBody = generateUserData(1)[0];
-          delete updateBody._id;
-          requests.body = JSON.stringify({
-            id: readIds('NativeUser' , 1)[0],
-            updateBody,
-          });
-          return requests;
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/updateOneUserRequest.js'),
         path: "/api/test-crud/update-one",
       },
     ],
@@ -50,15 +42,3 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
-
-let overallTime = 0;
-let count =0;
-instance.on('response', (_, __, ___, responseTime) => {
-  overallTime += responseTime;
-  count++;
-});
-
-instance.on('done', () => {
-  console.log('no. of successfull response ', count);
-  console.log('average response time ', overallTime/count);
-});

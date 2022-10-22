@@ -1,7 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { readIds } = require("../helper");
+const path = require("path");
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -19,16 +19,14 @@ const instance = autocannon(
     pipelining: 1,
     timeout: 1000,
     amount: inpt[0],
+    workers: 4,
     requests: [
       {
         method: "GET",
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          requests.path = `/api/test-crud/find-one/${readIds('NativeUser' , 1)[0]}`;
-          return requests;
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/findOneUserRequest.js'),
         path: `/api/test-crud/find-one/`,
       },
     ],

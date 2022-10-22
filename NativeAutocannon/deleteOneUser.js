@@ -1,7 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { readIdsRemove } = require("../helper");
+const path = require('path');
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -18,6 +18,7 @@ const instance = autocannon(
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
+    workers: 4,
     amount: inpt[0],
     requests: [
       {
@@ -25,10 +26,7 @@ const instance = autocannon(
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          requests.body = JSON.stringify({id: readIdsRemove('NativeUser' , 1)[0]});
-          return requests;
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/deleteOneUserRequest.js'),
         path: `/api/test-crud/delete-one/`,
       },
     ],

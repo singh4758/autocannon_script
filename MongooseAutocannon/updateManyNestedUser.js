@@ -1,8 +1,6 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { readIds } = require("../helper");
-const { generateNestedUserData } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -20,21 +18,15 @@ const instance = autocannon(
     pipelining: 1,
     timeout: 1000,
     amount: inpt[1],
+    workers: 4,
+    intialContext: { noOfData: inpt[0] },
     requests: [
       {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          const updateBody = generateNestedUserData(1)[0];
-          delete updateBody._id;
-          requests.body = JSON.stringify({
-            ids: readIds('MongooseNestedUser' , inpt[0]),
-            updateBody,
-          });
-          return requests;
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/updateManyNestedUserRequest.js'),
         path: "/api/test-crud/update-many",
       },
     ],
@@ -50,15 +42,3 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
-
-let overallTime = 0;
-let count =0;
-instance.on('response', (_, __, ___, responseTime) => {
-  overallTime += responseTime;
-  count++;
-});
-
-instance.on('done', () => {
-  console.log('no. of successfull response ', count);
-  console.log('average response time ', overallTime/count);
-});

@@ -1,8 +1,6 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { storeId } = require('./../helper');
-const { generateOrderAndInventory } = require("../schemaToGenerateFakeData");
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -19,6 +17,8 @@ const instance = autocannon(
     connections: inpt[2],
     pipelining: 1,
     timeout: 1000,
+    workers: 4,
+    intialContext: { noOfData: inpt[0] },
     amount: inpt[1],
     requests: [
       {
@@ -26,19 +26,7 @@ const instance = autocannon(
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          const { orders, inventories } = generateOrderAndInventory(inpt[0]);
-          requests.body = JSON.stringify({
-            orders,
-            inventories,
-          });
-          return requests;
-        },
-        onResponse: (status, res) => {
-          if (status === 200) {
-            // storeId(JSON.parse(res || "")?.body?.insertedIds || {}, "NativeOrderAndInventories");
-          }
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/insertManyOrderAndInventoriesRequest.js'),
         path: "/api/test-lookup/insert-many",
       },
     ],
@@ -54,15 +42,3 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
-
-let overallTime = 0;
-let count =0;
-instance.on('response', (_, __, ___, responseTime) => {
-  overallTime += responseTime;
-  count++;
-});
-
-instance.on('done', () => {
-  console.log('no. of successfull response ', count);
-  console.log('average response time ', overallTime/count);
-});

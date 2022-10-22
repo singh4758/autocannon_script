@@ -1,7 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
-const { countIds } = require("../helper");
+const path = require('path');
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -18,6 +18,8 @@ const instance = autocannon(
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
+    workers: 4,
+    initialContext: { limit: inpt[2] },
     amount: inpt[0],
     requests: [
       {
@@ -25,12 +27,7 @@ const instance = autocannon(
         headers: {
           "Content-type": "application/json; charset=utf-8",
         },
-        setupRequest: (requests) => {
-          const limit = parseInt(inpt[2]);
-          const page = parseInt(Math.random() * (countIds('NativeUser')/limit))+1;
-          requests.path = `/api/test-crud/find-all?page=${page}&limit=${limit}`;
-          return requests;
-        },
+        setupRequest: path.join(__dirname, './RequestHandler/findAllUserRequest.js'),
         path: `/api/test-crud/find-all/`,
       },
     ],
@@ -46,15 +43,3 @@ const instance = autocannon(
 );
 
 autocannon.track(instance);
-
-let overallTime = 0;
-let count =0;
-instance.on('response', (_, __, ___, responseTime) => {
-  overallTime += responseTime;
-  count++;
-});
-
-instance.on('done', () => {
-  console.log('no. of successfull response ', count);
-  console.log('average response time ', overallTime/count);
-});
