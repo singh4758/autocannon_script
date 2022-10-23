@@ -1,8 +1,8 @@
-const nativeUserIds = require('../../dataGenerated/NativeUserIds.js');
+const mongooseUserIds = require('../../dataGenerated/MongooseUserIds');
 
 module.exports = (requests) => {
   requests.body = JSON.stringify({
-    id: nativeUserIds.splice(0, 1),
+    id: mongooseUserIds.splice(0, 1),
   });
   return requests;
 };

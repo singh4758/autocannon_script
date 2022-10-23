@@ -1,8 +1,8 @@
-const mongooseUserIds = require('../../dataGenerated/MongooseUserIds');
+const nativeUserIds = require('../../dataGenerated/NativeUserIds.js');
 
 module.exports = (requests) => {
-  const id = mongooseUserIds.splice(0, 1);
+  const id = nativeUserIds.splice(0, 1);
   requests.path = `/api/test-crud/find-one/${id}`;
-  mongooseUserIds.push(id);
+  nativeUserIds.push(id);
   return requests;
 }

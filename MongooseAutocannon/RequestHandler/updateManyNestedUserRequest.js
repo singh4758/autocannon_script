@@ -1,11 +1,11 @@
 const { generateNestedUserData } = require("../../schemaToGenerateFakeData");
-const nativeNestedUserIds = require('../../dataGenerated/NativeNestedUserIds');
+const mongooseNestedUserIds = require('../../dataGenerated/MongooseNestedUserIds');
 
 module.exports = (requests, context) => {
   const { noOfData } = context;
   const updateBody = generateNestedUserData(1)[0];
   requests.body = JSON.stringify({
-    ids: nativeNestedUserIds.splice(0, noOfData),
+    ids: mongooseNestedUserIds.splice(0, noOfData),
     updateBody,
   });
   return requests;

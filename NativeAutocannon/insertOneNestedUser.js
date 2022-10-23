@@ -19,7 +19,7 @@ const instance = autocannon(
     connections: inpt[1],
     pipelining: 1,
     timeout: 1000,
-    workers: 4,
+    workers: 6,
     amount: inpt[0],
     requests: [
       {

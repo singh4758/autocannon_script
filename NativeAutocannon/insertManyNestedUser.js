@@ -20,7 +20,7 @@ const instance = autocannon(
     timeout: 1000,
     amount: inpt[1],
     initialContext: { noOfData: inpt[0] },
-    workers: 4,
+    workers: 6,
     requests: [
       {
         method: "POST",
