@@ -19,9 +19,9 @@ cp /home/abhishek/Documents/Myself/script/staticData/*.js /home/abhishek/Documen
 
 mongorestore --drop --archive="../staticData/Native_Driver"
 
-gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Native_Driver; clinic doctor  --collect-only  --dest ../NativeDoctor/lookUpOrderAndInventories/lookupD${noOfRecords}R${noOfRequest}C${noOfConnection} -- node ./dist/index.js'"
+gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Native_Driver; clinic doctor  --collect-only  --dest ../NativeDoctor/lookUpOrderAndInventories/lookupD${noOfRecords}R${noOfRequest}C${noOfConnection}I${noOfInnerDocs} -- node ./dist/index.js'"
 
 sleep 2
 
 
-node ../NativeAutocannon/orderAndInventoriesLookUp.js $noOfRequest $noOfConnection $noOfRecords $noOfInnerDocs> ../NativeReport/orderAndInventoriesLookUp"D${noOfRecords}R${noOfRequest}C${noOfConnection} $(date '+%s')".txt
+node ../NativeAutocannon/orderAndInventoriesLookUp.js $noOfRequest $noOfConnection $noOfRecords $noOfInnerDocs> ../NativeReport/orderAndInventoriesLookUp"D${noOfRecords}R${noOfRequest}C${noOfConnection}I${noOfInnerDocs} $(date '+%s')".txt

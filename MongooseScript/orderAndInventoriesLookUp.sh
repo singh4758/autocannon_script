@@ -18,8 +18,8 @@ cp /home/abhishek/Documents/Myself/script/staticData/*.js /home/abhishek/Documen
 
 mongorestore --drop --archive="../staticData/Mongoose_ODM"
 
-gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Mongoose_ODM; clinic doctor  --collect-only  --dest ../MongooseDoctor/lookUpOrderAndInventories/lookupD${noOfRecords}R${noOfRequest}C${noOfConnection} -- node ./dist/index.js'"
+gnome-terminal --tab --command="bash -c 'endyarnstart() { exec bash; }; trap endyarnstart INT; cd ../../Mongoose_ODM; clinic doctor  --collect-only  --dest ../MongooseDoctor/lookUpOrderAndInventories/lookupD${noOfRecords}R${noOfRequest}C${noOfConnection}I${noOfInnerDocs} -- node ./dist/index.js'"
 
 sleep 2
 
-node ../MongooseAutocannon/orderAndInventoriesLookUp.js $noOfRequest $noOfConnection $noOfRecords $noOfInnerDocs> ../MongooseReport/orderAndInventoriesLookUp"D${noOfRecords}R${noOfRequest}C${noOfConnection} $(date '+%s')".txt
+node ../MongooseAutocannon/orderAndInventoriesLookUp.js $noOfRequest $noOfConnection $noOfRecords $noOfInnerDocs> ../MongooseReport/orderAndInventoriesLookUp"D${noOfRecords}R${noOfRequest}C${noOfConnection}I${noOfInnerDocs} $(date '+%s')".txt
