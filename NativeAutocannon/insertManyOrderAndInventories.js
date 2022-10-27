@@ -1,6 +1,7 @@
 "use strict";
 
 const autocannon = require("autocannon");
+const path = require('path');
 
 let inpt = Object.values(process.argv)
   .slice(2)
@@ -18,7 +19,7 @@ const instance = autocannon(
     pipelining: 1,
     timeout: 1000,
     workers: 6,
-    intialContext: { noOfData: inpt[0] },
+    initialContext: { noOfData: inpt[0] },
     amount: inpt[1],
     requests: [
       {
